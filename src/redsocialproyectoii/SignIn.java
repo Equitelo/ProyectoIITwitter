@@ -10,11 +10,12 @@ import javax.swing.JSpinner;
 
 public class SignIn extends javax.swing.JFrame {
     //Inicio es el que contiene el arreglo
-    Inicio InstanciaMain;
+    AdminUsuarios InstanciaMain;
     //le convertimos en constructor
-    public SignIn(Inicio InstanciaPorParametro) {
+    public SignIn(AdminUsuarios InstanciaPorParametro) {
         initComponents();
         this.InstanciaMain=InstanciaPorParametro;
+        setLocationRelativeTo(null);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -191,23 +192,22 @@ public class SignIn extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No has llenado todas las casillas");
         } else {
             //variable booleana, ya que retorna true/false
-            boolean agregar = InstanciaMain.Usuarios.AgregarUsuario(name, user, password, genero, edad, fecha);
-            if (agregar){
+//            boolean agregar = InstanciaMain.AgregarUsuario(name, user, password, genero, edad, fecha);
+                Usuario cuenta = new Usuario(name, user, password, genero, edad, fecha);
+
+                InstanciaMain.agregarCuenta(cuenta);
                 JOptionPane.showMessageDialog(null, "SE HA REGISTRADO CORRECTAMENTE");
                 this.dispose();
-                Navegacion nav = Navegacion.getInstancia();
-                nav.setlblNameUser("@"+txtName.getText());
-                nav.setVisible(true);
-                nav.setLocationRelativeTo(null);
-            } else {
-                JOptionPane.showMessageDialog(null, "Usuario no valido!", "Error", HEIGHT);
-            }
+                Navegacion n = new Navegacion(InstanciaMain);
+                n.setVisible(true);
+                n.setlblNameUser("@"+txtName.getText());
+            
         }
         
     }//GEN-LAST:event_registerBtnActionPerformed
 
     private void btnGobackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGobackActionPerformed
-        InstanciaMain.setVisible(true);
+        new Inicio(InstanciaMain).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnGobackActionPerformed
 

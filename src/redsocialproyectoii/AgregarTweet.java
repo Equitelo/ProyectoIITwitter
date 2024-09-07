@@ -7,7 +7,6 @@ package redsocialproyectoii;
 public class AgregarTweet {
     
     Tweets []twittear;
-    
     public AgregarTweet(){
         twittear = new Tweets[100];
     }

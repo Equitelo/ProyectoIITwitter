@@ -5,6 +5,7 @@
 package redsocialproyectoii;
 
 import java.awt.Dimension;
+import java.util.Arrays;
 import java.util.Calendar;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -13,28 +14,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class Navegacion extends javax.swing.JFrame {
+    private static Navegacion instancia;
     private String usuario;
     //variable para reutillizar instancia
-    private static Navegacion instanciaUnica;
     AgregarTweet comment;
-    AdminUsuarios busquedaLista = new AdminUsuarios();
-    private Navegacion() {
+    AdminUsuarios instanciaMain;
+    public Navegacion(AdminUsuarios instanceForParameter) {
         initComponents();
+        this.instanciaMain=instanceForParameter;
         comment = new AgregarTweet();
-        busquedaLista.AgregarUsuario("Samuel", "samuel_lara", "feo", "Masculino", 18, "01-01-1999");
-        busquedaLista.AgregarUsuario("Alice", "alice123", "password", "Femenino", 25, "01-01-1999");
+        setLocationRelativeTo(null);
     }
     
-    public static Navegacion getInstancia() {
-        if (instanciaUnica == null) {
-            instanciaUnica = new Navegacion();
+    public Navegacion getInstance(){
+        if (instancia==null) {
+            instancia = new Navegacion(instanciaMain);
         }
-        return instanciaUnica;
-    }
-    
-    boolean comparar(){
-        
-        return false;
+        return instancia;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -247,26 +243,27 @@ public class Navegacion extends javax.swing.JFrame {
     }//GEN-LAST:event_areaTweetKeyTyped
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        listaUsers.removeAllItems();  // Limpiar el JComboBox antes de cada búsqueda
-    
-        String busqueda = txtBusqueda.getText().toLowerCase(); // Obtener el texto de búsqueda y convertir a minúsculas
-        System.out.println("Buscando: " + busqueda); // Imprime lo que estás buscando
-        for (Usuario Admin : busquedaLista.Admin) {
-            if (Admin != null) {
-                String nombreUsuario = Admin.toString().toLowerCase(); // Obtener el nombre del usuario y convertir a minúsculas
-                System.out.println("Comparando con: " + nombreUsuario); // Imprime el nombre del usuario
-                if (nombreUsuario.contains(busqueda)) {
-                    listaUsers.addItem(Admin.toString()); // Añadir el usuario al JComboBox si contiene la subcadena
-                }
+        //limpia el comboBox
+        listaUsers.removeAllItems();  
+        
+        String busqueda = txtBusqueda.getText().toLowerCase();
+        //conversion de arreglo para volverlo String en for each
+        String[] resultados = instanciaMain.busquedaLista(busqueda);
+        if(resultados!=null){
+            for(String usuarios: resultados){
+                listaUsers.addItem(usuarios);
             }
+        }else{
+            listaUsers.addItem("No se encontraron");
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-        Inicio volver = Inicio.getInstance();
-        volver.setVisible(true);
-        volver.setLocationRelativeTo(null);
-        this.dispose();
+        int salida = JOptionPane.showConfirmDialog(null, usuario+", desea cerrar sesion?", "Cerrar Sesion", JOptionPane.OK_CANCEL_OPTION);
+        if(salida==0){
+            new Inicio(instanciaMain).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnTwittActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTwittActionPerformed
@@ -280,11 +277,11 @@ public class Navegacion extends javax.swing.JFrame {
         if(!tweet.isEmpty()){
             if(comment.buscarTweets(tweet)==null){
                 //variable booleana, ya que retorna true/false
-                boolean agregado = comment.agregarTweet(usuario, tweet, fecha);
+                boolean agregado = comment.agregarTweet(usr, tweet, fecha);
                 if (agregado) {
-                     JTextArea tweetArea = new JTextArea("Usuario: " + usuario + "\n" +
-                                                    "Publicación: " + tweet + "\n" +
-                                                    "Fecha: " + fecha);
+                     JTextArea tweetArea = new JTextArea("Usuario: " + usr + "\n" +
+                                                         "Publicación: " + tweet + "\n" +
+                                                         "Fecha: " + fecha);
                     tweetArea.setLineWrap(true);
                     tweetArea.setWrapStyleWord(true); 
                     tweetArea.setEditable(false); 
@@ -310,7 +307,6 @@ public class Navegacion extends javax.swing.JFrame {
     public void setlblNameUser(String usuario){
         this.usuario=usuario;
         lblNameUser.setText(usuario);
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

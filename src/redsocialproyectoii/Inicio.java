@@ -7,19 +7,13 @@ package redsocialproyectoii;
 import javax.swing.JOptionPane;
 
 public class Inicio extends javax.swing.JFrame {
+//    private static Inicio instance;
     
-    private static Inicio instanceOnly;
     AdminUsuarios Usuarios;
-    public Inicio() {
+    public Inicio(AdminUsuarios adminUsrs) {
         initComponents();
-
-        Usuarios=new AdminUsuarios();
-    }
-    public static Inicio getInstance() {
-        if(instanceOnly == null){
-            instanceOnly = new Inicio();
-        }
-        return instanceOnly;
+        this.Usuarios=adminUsrs;
+        setLocationRelativeTo(null);
     }
     
     @SuppressWarnings("unchecked")
@@ -127,20 +121,23 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserActionPerformed
 
     private void signBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signBtnActionPerformed
-        new SignIn(this).setVisible(true);
+        new SignIn(Usuarios).setVisible(true);
+        txtUser.setText("");
+        txtPass.setText("");
         this.dispose();
     }//GEN-LAST:event_signBtnActionPerformed
 
     private void logBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logBtnActionPerformed
-        String user=txtUser.getText();
+        String usuario=txtUser.getText();
         String password=txtPass.getText();
         
         if(txtUser.getText().isEmpty()||txtPass.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Cuidado con las casillas");
         }else{
-                if (Usuarios.BuscarUsuario(user)!=null) {
-                    Navegacion nav = Navegacion.getInstancia();
-                    nav.setVisible(true);
+                if (Usuarios.BuscarUsuario(usuario)) {
+                    Navegacion n = new Navegacion(Usuarios);
+                    n.setVisible(true);
+                    n.setlblNameUser("@"+txtUser.getText());
                     this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "No hay");
@@ -175,13 +172,11 @@ public class Inicio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Inicio in = new Inicio();
-                in.setVisible(true);
-                in.setLocationRelativeTo(null);
+                new Inicio(new AdminUsuarios()).setVisible(true);
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
