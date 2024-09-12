@@ -4,9 +4,11 @@ public class Tweets {
     private String usuario;
     private String texto;
     private String fecha;
-    
-    public Tweets(){
-    
+    private Tweets post[];
+    private int numeroTwets;
+
+    public int getNumeroTwets() {
+        return numeroTwets;
     }
     
     public Tweets(String usuario, String text, String fecha){
@@ -33,5 +35,8 @@ public class Tweets {
     
     public String getFecha(){
         return fecha;
+    }
+    public Tweets[] getTweets() {
+        return this.post;
     }
 }

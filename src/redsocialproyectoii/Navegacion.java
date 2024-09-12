@@ -5,32 +5,24 @@
 package redsocialproyectoii;
 
 import java.awt.Dimension;
-import java.util.Arrays;
 import java.util.Calendar;
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class Navegacion extends javax.swing.JFrame {
-    private static Navegacion instancia;
+    //variable para mostrar usuario
     private String usuario;
     //variable para reutillizar instancia
-    AgregarTweet comment;
     AdminUsuarios instanciaMain;
+    private static AgregarTweet comment=new AgregarTweet();;
     public Navegacion(AdminUsuarios instanceForParameter) {
         initComponents();
         this.instanciaMain=instanceForParameter;
-        comment = new AgregarTweet();
+        
         setLocationRelativeTo(null);
-    }
-    
-    public Navegacion getInstance(){
-        if (instancia==null) {
-            instancia = new Navegacion(instanciaMain);
-        }
-        return instancia;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,7 +72,7 @@ public class Navegacion extends javax.swing.JFrame {
             }
         });
 
-        lblNameUser.setText("jLabel1");
+        lblNameUser.setText("Username");
 
         javax.swing.GroupLayout PanelTypeLayout = new javax.swing.GroupLayout(PanelType);
         PanelType.setLayout(PanelTypeLayout);
@@ -114,6 +106,11 @@ public class Navegacion extends javax.swing.JFrame {
         btnInteract.setText("Interacciones");
 
         btnHashtags.setText("Hashtags");
+        btnHashtags.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashtagsActionPerformed(evt);
+            }
+        });
 
         btnClose.setText("Cerrar Sesion");
         btnClose.addActionListener(new java.awt.event.ActionListener() {
@@ -257,7 +254,10 @@ public class Navegacion extends javax.swing.JFrame {
             listaUsers.addItem("No se encontraron");
         }
     }//GEN-LAST:event_btnSearchActionPerformed
-
+    
+    void mantenerTweets(JTextField obtener){
+//        obtener
+    }
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         int salida = JOptionPane.showConfirmDialog(null, usuario+", desea cerrar sesion?", "Cerrar Sesion", JOptionPane.OK_CANCEL_OPTION);
         if(salida==0){
@@ -269,6 +269,7 @@ public class Navegacion extends javax.swing.JFrame {
     private void btnTwittActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTwittActionPerformed
         Calendar cal= Calendar.getInstance();
         int dia=cal.get(Calendar.DATE);
+        // le sumo 1 para que no de 0
         int mes= cal.get(Calendar.MONTH)+1;
         int anio= cal.get(Calendar.YEAR);
         String usr=lblNameUser.getText();
@@ -276,10 +277,9 @@ public class Navegacion extends javax.swing.JFrame {
         String fecha = dia+"/"+mes+"/"+anio;
         if(!tweet.isEmpty()){
             if(comment.buscarTweets(tweet)==null){
-                //variable booleana, ya que retorna true/false
-                boolean agregado = comment.agregarTweet(usr, tweet, fecha);
-                if (agregado) {
-                     JTextArea tweetArea = new JTextArea("Usuario: " + usr + "\n" +
+                //boolean, ya que retorna true/false
+                if (comment.agregarTweet(usr, tweet, fecha)) {
+                    JTextArea tweetArea = new JTextArea("Usuario: " + usr + "\n" +
                                                          "Publicación: " + tweet + "\n" +
                                                          "Fecha: " + fecha);
                     tweetArea.setLineWrap(true);
@@ -304,6 +304,10 @@ public class Navegacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTwittActionPerformed
 
+    private void btnHashtagsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashtagsActionPerformed
+        
+    }//GEN-LAST:event_btnHashtagsActionPerformed
+    //setter para el variable privada de user.
     public void setlblNameUser(String usuario){
         this.usuario=usuario;
         lblNameUser.setText(usuario);

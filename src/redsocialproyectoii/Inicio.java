@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 
 public class Inicio extends javax.swing.JFrame {
 //    private static Inicio instance;
-    
     AdminUsuarios Usuarios;
     public Inicio(AdminUsuarios adminUsrs) {
         initComponents();
@@ -134,7 +133,7 @@ public class Inicio extends javax.swing.JFrame {
         if(txtUser.getText().isEmpty()||txtPass.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Cuidado con las casillas");
         }else{
-                if (Usuarios.BuscarUsuario(usuario)) {
+                if (Usuarios.buscarUsuario(usuario)!=null) {
                     Navegacion n = new Navegacion(Usuarios);
                     n.setVisible(true);
                     n.setlblNameUser("@"+txtUser.getText());

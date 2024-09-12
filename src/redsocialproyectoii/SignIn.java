@@ -9,12 +9,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 
 public class SignIn extends javax.swing.JFrame {
+    AgregarTweet at;
     //Inicio es el que contiene el arreglo
     AdminUsuarios InstanciaMain;
     //le convertimos en constructor
     public SignIn(AdminUsuarios InstanciaPorParametro) {
         initComponents();
         this.InstanciaMain=InstanciaPorParametro;
+        at = new AgregarTweet();
         setLocationRelativeTo(null);
     }
     @SuppressWarnings("unchecked")
